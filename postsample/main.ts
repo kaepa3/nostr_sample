@@ -1,4 +1,5 @@
 import { finishEvent, relayInit } from "npm:nostr-tools@1.14.2";
+import "https://deno.land/x/dotenv/load.ts";
 
 function init() {
   const privateKey: string = Deno.env.get("PRIVATE")!;
@@ -17,7 +18,7 @@ const event = {
   created_at: Math.floor(Date.now() / 1000),
   kind: 1,
   tags: [],
-  content: "アプリにて投稿",
+  content: "アプリにて投稿その２",
 };
 
 const signedEvent = finishEvent(event, privateKey);
@@ -31,5 +32,9 @@ relay.on("error", () => console.log(`failed to connect to ${relay.url}`));
 await relay.connect();
 
 await relay.publish(signedEvent);
+
+console.log("event published");
+
+await relay.close();
 
 console.log("disconnected fron relay");
